@@ -3,23 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>大學生社團報名系統</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>社團報名總覽 - 學生事務處</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        /* 針對版本C的客製化樣式：改為更簡潔、類似儀表板風格 */
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #f4f6f8;
+        }
+        .top-navbar {
+            background-color: #1e293b;
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .top-navbar h1 {
+            color: white;
+            font-size: 1.25rem;
+            margin: 0; letter-spacing: 1px;
+        }
+        header { display: none; /* 隱藏原本的 header */ }
+        
+        .main-content {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .controls-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+        
+        .controls-header h2 {
+            margin: 0;
+            font-size: 1.8rem;
+            color: #334155;
+        }
+        
+        .search-bar {
+            margin: 0;
+            width: 350px;
+            background: white;
+            border: 1px solid #cbd5e1;
+        }
+        
+        /* 讓清單有更簡潔的呈現 */
+        .club-grid {
+            gap: 1.5rem;
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <h1>CAMPUS CLUBS</h1>
-        <a href="admin.html" class="btn btn-outline btn-sm" style="width: auto">管理員登入 (Demo)</a>
-    </header>
+    <div class="top-navbar">
+        <h1>🎓 學生社團報名系統</h1>
+        <a href="admin.html" style="color: #cbd5e1; text-decoration: none; font-size: 0.9rem;">進入管理員後台 &rarr;</a>
+    </div>
 
-    <main class="container">
-        <div class="search-bar">
-            <!-- SVG Icon inline for better loading -->
-            <svg class="search-icon" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-            </svg>
-            <input type="text" id="searchInput" placeholder="搜尋社團名稱或介紹...">
+    <main class="main-content">
+        <div class="controls-header">
+            <div>
+                <h2>所有社團</h2>
+                <p style="color: #64748b; margin-top: 0.5rem; font-size: 0.95rem;">請選擇您感興趣的社團並填寫報名資料，每位同學無報名數量限制。</p>
+            </div>
+            
+            <div class="search-bar">
+                <svg class="search-icon" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+                <input type="text" id="searchInput" placeholder="搜尋社團代碼或名稱...">
+            </div>
         </div>
 
         <div class="club-grid" id="clubGrid">
@@ -27,40 +87,43 @@
         </div>
     </main>
 
-    <!-- Registration Modal -->
+    <!-- Registration Modal (Minimalist variation) -->
     <div class="modal-overlay" id="regModal">
-        <div class="modal">
+        <div class="modal" style="border-top: 4px solid var(--primary-color); border-radius: 8px;">
             <div class="modal-header">
-                <div class="modal-title" id="modalTitle">報名社團</div>
+                <div class="modal-title" id="modalTitle" style="font-weight: 700;">填寫報名表單</div>
                 <button class="close-btn" onclick="closeModal()">&times;</button>
             </div>
             
             <form id="regForm" onsubmit="submitRegistration(event)">
                 <input type="hidden" id="clubId">
+                <div style="background: #f8fafc; padding: 1rem; border-radius: 6px; margin-bottom: 1.5rem;">
+                    <p style="margin: 0; font-size: 0.9rem; color: #475569;">請確認您的聯絡資訊正確無誤，以免錯過社團重要通知。</p>
+                </div>
+
                 <div class="form-group">
-                    <label for="studentName">姓名</label>
-                    <input type="text" id="studentName" required placeholder="請輸入姓名">
+                    <label for="studentName">學生姓名</label>
+                    <input type="text" id="studentName" required>
                 </div>
                 <div class="form-group">
-                    <label for="studentId">學號</label>
-                    <input type="text" id="studentId" required placeholder="請輸入學號">
+                    <label for="studentId">學號 (Student ID)</label>
+                    <input type="text" id="studentId" required>
                 </div>
                 <div class="form-group">
-                    <label for="studentEmail">聯絡信箱</label>
-                    <input type="email" id="studentEmail" required placeholder="請輸入 Email">
+                    <label for="studentEmail">電子郵件 (Email)</label>
+                    <input type="email" id="studentEmail" required>
                 </div>
                 <div class="form-group">
-                    <label for="studentPhone">手機號碼</label>
-                    <input type="tel" id="studentPhone" required placeholder="請輸入手機號碼">
+                    <label for="studentPhone">行動電話 (Mobile)</label>
+                    <input type="tel" id="studentPhone" required>
                 </div>
-                <!-- 針對本週無假金流的 mock 功能 -->
                 <div class="form-group">
-                    <label for="paymentInfo">匯款帳號末五碼 (選填，若有收取費用)</label>
-                    <input type="text" id="paymentInfo" placeholder="例如：12345">
+                    <label for="paymentInfo">繳費備註 (帳號後五碼)</label>
+                    <input type="text" id="paymentInfo" placeholder="選填">
                 </div>
-                <div style="margin-top: 1.5rem; display: flex; gap: 0.5rem;">
-                    <button type="submit" class="btn btn-primary" style="flex: 1;">確認報名</button>
-                    <button type="button" class="btn btn-outline" style="flex: 1;" onclick="closeModal()">取消</button>
+                <div style="margin-top: 1.5rem; display: flex; justify-content: flex-end; gap: 1rem;">
+                    <button type="button" class="btn btn-outline" style="width: auto; padding: 0.5rem 1.5rem;" onclick="closeModal()">取消</button>
+                    <button type="submit" class="btn btn-primary" style="width: auto; padding: 0.5rem 2rem;">確認送出</button>
                 </div>
             </form>
         </div>
@@ -68,10 +131,11 @@
 
     <!-- Alert Modal (for Success/Error) -->
     <div class="modal-overlay" id="alertModal" style="z-index: 1000;">
-        <div class="modal" style="max-width: 300px; text-align: center;">
-            <div class="modal-title" id="alertTitle" style="margin-bottom: 1rem;">通知</div>
-            <p id="alertMessage" style="margin-bottom: 1.5rem; color: var(--text-muted);"></p>
-            <button class="btn btn-primary" onclick="closeAlert()">確定</button>
+        <div class="modal" style="max-width: 320px; text-align: center; border-radius: 12px;">
+            <div style="font-size: 2rem; margin-bottom: 1rem;">🔔</div>
+            <div class="modal-title" id="alertTitle" style="margin-bottom: 1rem; font-size: 1.25rem;">訊息</div>
+            <p id="alertMessage" style="margin-bottom: 2rem; color: #64748b; line-height: 1.5;"></p>
+            <button class="btn btn-primary" style="width: 100%; border-radius: 8px;" onclick="closeAlert()">確定</button>
         </div>
     </div>
 
